@@ -1,0 +1,1 @@
+In a Full Wave Rectifier circuit two diodes are now used, one for each half of the cycle. A multiple winding transformer is used whose secondary winding is split equally into two halves with a common centre tapped connection, (C).
