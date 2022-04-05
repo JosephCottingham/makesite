@@ -6,18 +6,22 @@ import (
 	"os"
 	"log"
 	"strings"
+	"flag"
 )
 
 func main() {
+
+	postDirPointer := flag.String("file", "first-post.txt", "a string")
+	postDir := *postDirPointer
+
 	// Read Post File
-	postDir := "first-post.txt"
 	postFile, err := os.Open(postDir)
 	if err != nil {
         log.Fatal(err)
     }
 	defer postFile.Close()
 	post, err := ioutil.ReadAll(postFile)
-	post_string := string(post)
+	postString := string(post)
 
 	// Read Template File
 	templateDir := "template.tmpl"
@@ -27,14 +31,17 @@ func main() {
     }
 	defer templateFile.Close()
 	template, err := ioutil.ReadAll(templateFile)
-	template_string := string(template)
+	templateString := string(template)
 
 
-	html_string := strings.Replace(template_string, "{{ content }}", post_string, -1)
-	fmt.Println(html_string)
+	htmlString := strings.Replace(templateString, "{{ content }}", postString, -1)
+	fmt.Println(htmlString)
+	save(htmlString, postDir)
+}
 
+func save(htmlString string, postDir string) {
 	htmlDir := strings.Replace(postDir, "txt", "html", -1)
-	htmlFile, err := os.Create(htmlDir)
+	htmlFile, _ := os.Create(htmlDir)
 	defer htmlFile.Close()
-	htmlFile.WriteString(html_string)
+	htmlFile.WriteString(htmlString)
 }
